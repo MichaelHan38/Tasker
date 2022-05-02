@@ -51,47 +51,22 @@ class TodoItemStore {
     }
     
     func delete(atIndexPath indexPath: IndexPath) {
-        let title = todoItems[indexPath.row].title
-        todoItems.remove(at: indexPath.row)
+        let result = fetchTodoItem(fromRow: indexPath.row)
         
-        // Save changes to core data
-        var todoItem: TodoItemEntity!
-        let context = container.viewContext
-        
-        let fetchTodoItem: NSFetchRequest<TodoItemEntity> = TodoItemEntity.fetchRequest()
-        fetchTodoItem.predicate = NSPredicate(format: "title == %@", title)
-        
-        let results = try? context.fetch(fetchTodoItem)
-        if results?.count == 1 {
-            
-        }
-        todoItem = results?.first
-        context.delete(todoItem)
-//        todoItem.isDone = !todoItem.isDone
+        result.context.delete(result.entity)
         do {
-            try context.save()
+            try result.context.save()
+            todoItems.remove(at: indexPath.row)
         } catch {}
     }
     
     func markDone(atIndexPath indexPath: IndexPath) {
-        todoItems[indexPath.row].isDone = !todoItems[indexPath.row].isDone
-        let title = todoItems[indexPath.row].title
-        
-        // Save changes to core data
-        var todoItem: TodoItemEntity!
-        let context = container.viewContext
-        
-        let fetchTodoItem: NSFetchRequest<TodoItemEntity> = TodoItemEntity.fetchRequest()
-        fetchTodoItem.predicate = NSPredicate(format: "title == %@", title)
-        
-        let results = try? context.fetch(fetchTodoItem)
-        if results?.count == 1 {
-            
-        }
-        todoItem = results?.first
-        todoItem.isDone = !todoItem.isDone
+        let result = fetchTodoItem(fromRow: indexPath.row)
+
+        result.entity.isDone = !result.entity.isDone
         do {
-            try context.save()
+            try result.context.save()
+            todoItems[indexPath.row].isDone = !todoItems[indexPath.row].isDone
         } catch {}
     }
     
@@ -114,8 +89,20 @@ class TodoItemStore {
         return IndexPath(row:todoItems.count - 1, section: 0)
     }
     
-    private func save() {
+    // fetchTodoItem queries Core Data and return NSManagedObjectContext
+    // and TodoItemEntity based on selected table view row
+    private func fetchTodoItem(fromRow row: Int) -> (context: NSManagedObjectContext, entity: TodoItemEntity) {
+        var entity: TodoItemEntity!
         
+        let title = todoItems[row].title
+        let context = container.viewContext
         
+        let fetchTodoItem: NSFetchRequest<TodoItemEntity> = TodoItemEntity.fetchRequest()
+        fetchTodoItem.predicate = NSPredicate(format: "title == %@", title)
+        
+        let results = try? context.fetch(fetchTodoItem)
+        entity = results?.first
+        
+        return (context, entity)
     }
 }
