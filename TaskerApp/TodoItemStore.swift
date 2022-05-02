@@ -51,11 +51,48 @@ class TodoItemStore {
     }
     
     func delete(atIndexPath indexPath: IndexPath) {
+        let title = todoItems[indexPath.row].title
         todoItems.remove(at: indexPath.row)
+        
+        // Save changes to core data
+        var todoItem: TodoItemEntity!
+        let context = container.viewContext
+        
+        let fetchTodoItem: NSFetchRequest<TodoItemEntity> = TodoItemEntity.fetchRequest()
+        fetchTodoItem.predicate = NSPredicate(format: "title == %@", title)
+        
+        let results = try? context.fetch(fetchTodoItem)
+        if results?.count == 1 {
+            
+        }
+        todoItem = results?.first
+        context.delete(todoItem)
+//        todoItem.isDone = !todoItem.isDone
+        do {
+            try context.save()
+        } catch {}
     }
     
     func markDone(atIndexPath indexPath: IndexPath) {
         todoItems[indexPath.row].isDone = !todoItems[indexPath.row].isDone
+        let title = todoItems[indexPath.row].title
+        
+        // Save changes to core data
+        var todoItem: TodoItemEntity!
+        let context = container.viewContext
+        
+        let fetchTodoItem: NSFetchRequest<TodoItemEntity> = TodoItemEntity.fetchRequest()
+        fetchTodoItem.predicate = NSPredicate(format: "title == %@", title)
+        
+        let results = try? context.fetch(fetchTodoItem)
+        if results?.count == 1 {
+            
+        }
+        todoItem = results?.first
+        todoItem.isDone = !todoItem.isDone
+        do {
+            try context.save()
+        } catch {}
     }
     
     func insert(todoItem: TodoItem) -> IndexPath {
@@ -75,5 +112,10 @@ class TodoItemStore {
         }
         
         return IndexPath(row:todoItems.count - 1, section: 0)
+    }
+    
+    private func save() {
+        
+        
     }
 }
