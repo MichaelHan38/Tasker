@@ -1,10 +1,5 @@
 import UIKit
 
-struct TodoItem {
-    let title: String
-    var isDone: Bool
-}
-
 
 
 class TodoListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -25,7 +20,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
             guard let title = alert.textFields?.first?.text else {
                 return
             }
-            let todoItem = TodoItem(title: title, isDone: false)
+            let todoItem = TodoItem(date: Date.init(), title: title, isDone: false)
             self.addNewItem(todoItem)
         }
         alert.addAction(addAction)
@@ -51,6 +46,8 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        store.load()
         
         createConstraints()
         
@@ -90,7 +87,9 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             store.delete(atIndexPath:  indexPath)
+            tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
         }
     }
     
@@ -101,9 +100,9 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
 //        DispatchQueue.main.async {
 //            <#code#>
 //        }
-        tableView.beginUpdates()
+//        tableView.beginUpdates()
         tableView.reloadRows(at: [indexPath], with: .fade)
-        tableView.endUpdates()
+//        tableView.endUpdates()
     }
 }
 

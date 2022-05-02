@@ -20,17 +20,41 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="SPZ-dk-igo">
-                        <barButtonItem key="rightBarButtonItem" title="+" id="z1b-z5-O9S">
-                            <connections>
-                                <action selector="addItemPressed:" destination="BYZ-38-t0r" id="4K6-eH-9Js"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="plus" catalog="system" landscapeImage="plus" id="z1b-z5-O9S">
+                                <connections>
+                                    <action selector="addItemPressed:" destination="BYZ-38-t0r" id="4K6-eH-9Js"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="M" image="calendar" catalog="system" landscapeImage="calendar" id="5t5-MD-Nw3">
+                                <connections>
+                                    <action selector="calendarSegue:" destination="BYZ-38-t0r" id="Rbl-af-Pub"/>
+                                    <segue destination="mel-Ig-ZcS" kind="show" identifier="toCalendarSegue" id="Geq-0E-XZR"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="928.98550724637687" y="84.375"/>
+        </scene>
+        <!--Calendar View Controller-->
+        <scene sceneID="sqF-vG-CYq">
+            <objects>
+                <viewController title="Calendar View Controller" id="mel-Ig-ZcS" customClass="CalendarViewController" customModule="TaskerApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="r8J-V9-qNU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="zH7-kb-0DV"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="V8p-Q4-o1T"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rJg-GY-gAO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2038" y="84"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GGp-Ll-t43">
@@ -52,6 +76,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="calendar" catalog="system" width="128" height="106"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
