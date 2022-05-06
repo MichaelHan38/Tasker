@@ -3,7 +3,7 @@ import UIKit
 
 
 class TodoListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+    var debug = TodoDict()
 
     var todoItems: [TodoItem] = []
     
@@ -39,6 +39,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     
     private func addNewItem(_ todoItem: TodoItem) {
         let indexPath = store.insert(todoItem: todoItem)
+        debug.put(todoItem: todoItem)
         tableView.beginUpdates()
         tableView.insertRows(at: [indexPath], with: .fade)
         tableView.endUpdates()
@@ -69,6 +70,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         let todoItem = store.item(forIndexPath: indexPath)
+        
         cell.textLabel?.text = todoItem?.title
         
         // nil coallescing operator. If the first statement is nil, default value will be false

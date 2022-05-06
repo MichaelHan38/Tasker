@@ -1,12 +1,6 @@
 import Foundation
 import CoreData
 
-struct TodoItem {
-    let date: Date
-    let title: String
-    var isDone: Bool
-}
-
 class TodoItemStore {
     private var todoItems: [TodoItem] = [
 //        TodoItem(title: "Feed cats", isDone: false),
