@@ -26,8 +26,19 @@ class TodoItemStore {
         return todoItems.count
     }
     
-    func load() {
-        let request = TodoItemEntity.fetchRequest()
+    func load(todoItemsOn date: Date) {
+        // Set date for querying
+        let calendar = Calendar.current
+        let today = Date()
+        let startDate = calendar.startOfDay(for: today)
+        let endDate = calendar.date(byAdding: DateComponents(day: 1), to: startDate)
+        print(startDate, endDate)
+        
+        let request: NSFetchRequest<TodoItemEntity> = TodoItemEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "(date >= %@) AND (date <= %@)", argumentArray: [startDate, endDate])
+        
+        
+//        let request = TodoItemEntity.fetchRequest()
         
         let context = container.viewContext
         

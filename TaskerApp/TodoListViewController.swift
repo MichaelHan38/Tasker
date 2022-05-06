@@ -47,7 +47,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        store.load()
+        store.load(todoItemsOn: Date())
         
         createConstraints()
         
@@ -95,14 +95,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         store.markDone(atIndexPath: indexPath)
-        
-        // Has to happen on the UI thread, i.e. wrap around the following code if running from background thread:
-//        DispatchQueue.main.async {
-//            <#code#>
-//        }
-//        tableView.beginUpdates()
         tableView.reloadRows(at: [indexPath], with: .fade)
-//        tableView.endUpdates()
     }
 }
 
