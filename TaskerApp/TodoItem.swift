@@ -15,21 +15,18 @@ class TodoDict {
     var dailyTaskDict: [String: DailyTodo] = [:]
     
     func put(todoItem: TodoItem) {
-        // format a TodoItem's date into a string
-        let formatter = DateFormatter()
-        formatter.timeZone = .current
-        formatter.dateStyle = .short
-        formatter.timeStyle = .none
-        let date = formatter.string(from: todoItem.date)
+        let date = shortenDate(todoItem.date)
         
-        // Insert todoItem to existing DailyTodo. Otherwise create a new DailyTodo with one element: todoItem
-        if var allTodos = dailyTaskDict[date] {
-            // prevent multiple tasks with the same name that day
-            if let _ = allTodos.list[todoItem.title] {
+        // Insert todoItem to existing DailyTodo. Otherwise
+        // create a new DailyTodo with the todoItem as the only element
+        if var dailyTodos = dailyTaskDict[date] {
+            
+            // prevent multiple tasks with the same name on the same day
+            if let _ = dailyTodos.list[todoItem.title] {
                 print(self.dailyTaskDict[date]?.list ?? "a" as String)
                 return
             } else {
-                // Force unwrap because data[key] can never be empty when this part executes
+                // Force unwrap because dailyTaskDict[date] can never be empty when this part executes
                 self.dailyTaskDict[date]!.list[todoItem.title] = todoItem
             }
             
@@ -38,4 +35,27 @@ class TodoDict {
         }
         print(self.dailyTaskDict[date]?.list ?? "Not Found" as String)
     }
+    
+    func get(todosOn date: String) {
+        
+    }
+    
+    func delete(_ todoItem: TodoItem ) {
+        
+    }
+    
+    func markDone(_ todoItem: TodoItem) {
+        
+    }
+
+}
+
+// shortenDate converts a Date object into a "mm/dd/yy" formatted string
+private func shortenDate(_ date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.timeZone = .current
+    formatter.dateStyle = .short
+    formatter.timeStyle = .none
+    
+    return formatter.string(from: date)
 }
