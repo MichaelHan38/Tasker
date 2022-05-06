@@ -1,4 +1,4 @@
-# A Simmple to-do app
+# A Simple to-do app
 
 Project overview: small todo list app with calendar visualization  
 Team member: Michael Han
