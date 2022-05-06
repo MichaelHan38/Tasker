@@ -4,7 +4,7 @@ Project overview: small todo list app with calendar visualization
 Team member: Michael Han
 
 
-#Must have features:
+# Must have features:
 - Basic functionality
   - Ability to add, mark done, & delete todo items [x] (done in class)
   - Modifications made to each todo item persist in CoreData [x]
@@ -16,7 +16,7 @@ Team member: Michael Han
   - Calendar show number of todo items in each date 
 
 
-#Nice to have features:
+# Nice to have features:
 - Home screen show tasks for the next 7 days
 - Add button for each day on the home screen
 - Todo item support additional description
