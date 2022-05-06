@@ -1,6 +1,6 @@
 # About
 
-Project overview: small todo list app with calendar visualization
+Project overview: small todo list app with calendar visualization  
 Team member: Michael Han
 
 
