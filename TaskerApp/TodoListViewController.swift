@@ -1,6 +1,8 @@
 import UIKit
 
-
+class TodoCell: UITableViewCell {
+    
+}
 
 class TodoListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -8,7 +10,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     var todoItems: [TodoItem] = []
     
     private let tableView = UITableView()
-    
     private let store = TodoItemStore()
     
     @IBAction func addItemPressed(_ sender: Any) {
@@ -53,6 +54,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.register(TodoCell .self, forCellReuseIdentifier: "TodoCell")
     }
     
     private func createConstraints() {
@@ -67,7 +69,10 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell") as? TodoCell else {
+            return UITableViewCell()
+        }
+//        let cell = UITableViewCell()
         let todoItem = store.item(forIndexPath: indexPath)
         cell.textLabel?.text = todoItem?.title
         

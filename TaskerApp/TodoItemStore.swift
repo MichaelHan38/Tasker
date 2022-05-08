@@ -8,9 +8,7 @@ struct TodoItem {
 }
 
 class TodoItemStore {
-    private var todoItems: [TodoItem] = [
-//        TodoItem(title: "Feed cats", isDone: false),
-    ]
+    private var todoItems: [TodoItem] = []
     
     private lazy var container: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "TodoItems")
@@ -32,13 +30,9 @@ class TodoItemStore {
         let today = Date()
         let startDate = calendar.startOfDay(for: today)
         let endDate = calendar.date(byAdding: DateComponents(day: 1), to: startDate)
-        print(startDate, endDate)
         
         let request: NSFetchRequest<TodoItemEntity> = TodoItemEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "(date >= %@) AND (date <= %@)", argumentArray: [startDate, endDate])
-        
-        
-//        let request = TodoItemEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "date >= %@ AND date <= %@", argumentArray: [startDate, endDate])
         
         let context = container.viewContext
         
@@ -100,16 +94,17 @@ class TodoItemStore {
         return IndexPath(row:todoItems.count - 1, section: 0)
     }
     
-    // fetchTodoItem queries Core Data and return NSManagedObjectContext
-    // and TodoItemEntity based on selected table view row
+    // Helper function for modifying saved TodoItem. Queries Core Data and
+    // return NSManagedObjectContext and TodoItemEntity based on table view selection
     private func fetchTodoItem(fromRow row: Int) -> (context: NSManagedObjectContext, entity: TodoItemEntity) {
         var entity: TodoItemEntity!
         
         let title = todoItems[row].title
+        let date = todoItems[row].date
         let context = container.viewContext
         
         let fetchTodoItem: NSFetchRequest<TodoItemEntity> = TodoItemEntity.fetchRequest()
-        fetchTodoItem.predicate = NSPredicate(format: "title == %@", title)
+        fetchTodoItem.predicate = NSPredicate(format: "title == %@ AND date == %@", argumentArray: [title, date])
         
         let results = try? context.fetch(fetchTodoItem)
         entity = results?.first
