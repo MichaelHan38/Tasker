@@ -27,7 +27,7 @@ class TodoItemStore {
     func load(todoItemsOn date: Date) {
         // Set date for querying
         let calendar = Calendar.current
-        let today = Date()
+        let today = date
         let startDate = calendar.startOfDay(for: today)
         let endDate = calendar.date(byAdding: DateComponents(day: 1), to: startDate)
         

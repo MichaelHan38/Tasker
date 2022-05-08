@@ -6,9 +6,6 @@ class TodoCell: UITableViewCell {
 
 class TodoListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-
-    var todoItems: [TodoItem] = []
-    
     private let tableView = UITableView()
     private let store = TodoItemStore()
     
@@ -72,7 +69,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell") as? TodoCell else {
             return UITableViewCell()
         }
-//        let cell = UITableViewCell()
         let todoItem = store.item(forIndexPath: indexPath)
         cell.textLabel?.text = todoItem?.title
         
