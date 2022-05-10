@@ -7,7 +7,57 @@ class TodoCell: UITableViewCell {
 class TodoListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     private let tableView = UITableView()
-    private let store = TodoItemStore()
+    private var store = TodoItemStore()
+    private var date = Date()
+    
+    
+    private let days = ["", "Monday", "Tuesday", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        store.load(todoItemsOn: Date())
+        
+        
+        displayTableView()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(TodoCell .self, forCellReuseIdentifier: "TodoCell")
+    }
+    
+    private func displayTableView() {
+        view.addSubview(tableView)
+        
+        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    @IBAction func prevDayButton(_ sender: Any) {
+        if let newDate = Calendar.current.date(byAdding: .day, value: -1, to: date) {
+            date = newDate
+        }
+        store.load(todoItemsOn: date)
+        tableView.reloadData()
+        
+    }
+    @IBAction func nextDayButton(_ sender: Any) {
+        if let newDate = Calendar.current.date(byAdding: .day, value: 1, to: date) {
+            date = newDate
+        }
+        store.load(todoItemsOn: date)
+        tableView.reloadData()
+    }
+    
+    @IBAction func todayButton(_ sender: Any) {
+        date = Date()
+        store.load(todoItemsOn: date)
+        tableView.reloadData()
+    }
     
     @IBAction func addItemPressed(_ sender: Any) {
         
@@ -18,7 +68,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
             guard let title = alert.textFields?.first?.text else {
                 return
             }
-            let todoItem = TodoItem(date: Date.init(), title: title, isDone: false)
+            let todoItem = TodoItem(date: date, title: title, isDone: false)
             self.addNewItem(todoItem)
         }
         alert.addAction(addAction)
@@ -41,29 +91,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.insertRows(at: [indexPath], with: .fade)
         tableView.endUpdates()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        store.load(todoItemsOn: Date())
-        
-        createConstraints()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(TodoCell .self, forCellReuseIdentifier: "TodoCell")
-    }
-    
-    private func createConstraints() {
-        view.addSubview(tableView)
-        
-        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell") as? TodoCell else {
@@ -79,6 +106,12 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
             cell.accessoryType = UITableViewCell.AccessoryType.none
         }
         return cell
+    }
+    
+    // Set the title for each section
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let title = days[Calendar.current.component(.weekday, from: date)] + " " + dateFormatter.string(from: date)
+        return title
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -98,5 +131,14 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
         store.markDone(atIndexPath: indexPath)
         tableView.reloadRows(at: [indexPath], with: .fade)
     }
+    
+    private lazy var dateFormatter : DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .none
+        formatter.timeZone = TimeZone.current
+        return formatter
+    }()
+    
 }
 

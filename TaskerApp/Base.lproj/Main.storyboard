@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Todo List View Controller-->
+        <!--Item-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="TodoListViewController" customModule="TaskerApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,8 +18,26 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="a2L-bf-NTl"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="SPZ-dk-igo">
+                        <leftBarButtonItems>
+                            <barButtonItem title="Item" image="arrowtriangle.left" catalog="system" id="oG1-WV-lkB">
+                                <connections>
+                                    <action selector="prevDayButton:" destination="BYZ-38-t0r" id="7oU-cH-9Qx"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Today" id="9Xy-KF-epx">
+                                <connections>
+                                    <action selector="todayButton:" destination="BYZ-38-t0r" id="D2t-Nb-Oq7"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="arrowtriangle.right" catalog="system" id="cAs-15-8Bw">
+                                <connections>
+                                    <action selector="nextDayButton:" destination="BYZ-38-t0r" id="40I-V5-k7v"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <rightBarButtonItems>
                             <barButtonItem image="plus" catalog="system" landscapeImage="plus" id="z1b-z5-O9S">
                                 <connections>
@@ -34,7 +52,7 @@
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -50,7 +68,13 @@
                         <viewLayoutGuide key="safeArea" id="zH7-kb-0DV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="V8p-Q4-o1T"/>
+                    <navigationItem key="navigationItem" id="V8p-Q4-o1T">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="plus" catalog="system" id="vfG-wc-dMD">
+                            <connections>
+                                <action selector="addItemPressed:" destination="mel-Ig-ZcS" id="gHF-f9-Iyy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rJg-GY-gAO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -76,6 +100,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrowtriangle.left" catalog="system" width="128" height="113"/>
+        <image name="arrowtriangle.right" catalog="system" width="128" height="113"/>
         <image name="calendar" catalog="system" width="128" height="106"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">

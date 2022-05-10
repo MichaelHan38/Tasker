@@ -5,6 +5,7 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
     
     private let tableView = UITableView()
     private let store = TodoItemStore()
+    private var selectedDate = Date()
     
     var calendar: FSCalendar!
     
@@ -22,6 +23,38 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    @IBAction func addItemPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "Add todo item",
+                                      message: nil, preferredStyle: .alert)
+        
+        let addAction = UIAlertAction(title: "Add", style: .default) { [unowned self]_ in
+            guard let title = alert.textFields?.first?.text else {
+                return
+            }
+            let todoItem = TodoItem(date: selectedDate, title: title, isDone: false)
+            self.addNewItem(todoItem)
+        }
+        alert.addAction(addAction)
+        
+        let cancelAction = UIAlertAction(title: "Canccel", style: .cancel) {_ in
+            
+        }
+        alert.addAction(cancelAction)
+        
+        alert.addTextField { textField in
+            textField.placeholder = "Todo item"
+        }
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func addNewItem(_ todoItem: TodoItem) {
+        let indexPath = store.insert(todoItem: todoItem)
+        tableView.beginUpdates()
+        tableView.insertRows(at: [indexPath], with: .fade)
+        tableView.endUpdates()
+    }
+    
     func displayCalendar() {
         let w = self.view.frame.size.width
         let h = self.view.frame.size.height
@@ -35,15 +68,17 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        selectedDate = date
         store.load(todoItemsOn: date)
         tableView.reloadData()
     }
     
     private func displayTableView() {
+        let h = self.view.frame.size.height
         view.addSubview(tableView)
         
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: self.view.frame.size.width/2).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -h/2).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         
@@ -57,7 +92,6 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
         let todoItem = store.item(forIndexPath: indexPath)
         cell.textLabel?.text = todoItem?.title
         
-        // nil coallescing operator. If the first statement is nil, default value will be false
         if todoItem?.isDone ?? false {
             cell.accessoryType = UITableViewCell.AccessoryType.checkmark
         } else {
