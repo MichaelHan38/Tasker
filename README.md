@@ -9,10 +9,10 @@ Team member: Michael Han
   - [x] Ability to add, mark done, & delete todo items  (done in class)
   - [x] Modifications made to each todo item persist in CoreData 
   - [x] CoreData querying by dates 
-- [ ] 2nd screen: monthly task 
-  - [ ] Display calendar and todo items on selected dates 
+- [X] 2nd screen: monthly task 
+  - [X] Display calendar and todo items on selected dates 
 - [ ] Styling & visualization
-  - [ ] Display date of active todo list
+  - [X] Display date of active todo list
   - [ ] Style monthly calendar
 
 
