@@ -36,7 +36,7 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
         }
         alert.addAction(addAction)
         
-        let cancelAction = UIAlertAction(title: "Canccel", style: .cancel) {_ in
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) {_ in
             
         }
         alert.addAction(cancelAction)
@@ -58,11 +58,17 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
     func displayCalendar() {
         let w = self.view.frame.size.width
         let h = self.view.frame.size.height
-        calendar  = FSCalendar(frame: CGRect(x: 0.0, y: h/2, width: w, height: h/2))
+        calendar  = FSCalendar(frame: CGRect(x: 20.0, y: h/16, width: w - 40, height: h/2 - h/8))
         calendar.scope = .month
         calendar.scrollDirection = .horizontal
         calendar.firstWeekday = 2
         calendar.select(calendar.today)
+        
+        calendar.appearance.todayColor = UIColor.orange
+        calendar.appearance.selectionColor = UIColor.blue
+        calendar.appearance.borderSelectionColor = UIColor.blue
+        calendar.appearance.titleWeekendColor = UIColor.orange
+        calendar.appearance.headerMinimumDissolvedAlpha = 0.0
         self.view.addSubview(calendar)
     }
     
@@ -77,8 +83,8 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
         let h = self.view.frame.size.height
         view.addSubview(tableView)
         
-        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -h/2).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: h/2).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         
