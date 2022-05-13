@@ -58,15 +58,13 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
     func displayCalendar() {
         let w = self.view.frame.size.width
         let h = self.view.frame.size.height
-        calendar  = FSCalendar(frame: CGRect(x: 20.0, y: h/16, width: w - 40, height: h/2 - h/8))
+        calendar  = FSCalendar(frame: CGRect(x: 20.0, y: h/16, width: w - 40, height: 3*h/8))
         calendar.scope = .month
         calendar.scrollDirection = .horizontal
         calendar.firstWeekday = 2
         calendar.select(calendar.today)
         
         calendar.appearance.todayColor = UIColor.orange
-        calendar.appearance.selectionColor = UIColor.blue
-        calendar.appearance.borderSelectionColor = UIColor.blue
         calendar.appearance.titleWeekendColor = UIColor.orange
         calendar.appearance.headerMinimumDissolvedAlpha = 0.0
         self.view.addSubview(calendar)
