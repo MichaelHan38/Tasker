@@ -9,6 +9,8 @@ struct TodoItem {
 
 class TodoItemStore {
     private var todoItems: [TodoItem] = []
+    private static var _model: NSManagedObjectModel?
+    
     
     private lazy var container: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "TodoItems")

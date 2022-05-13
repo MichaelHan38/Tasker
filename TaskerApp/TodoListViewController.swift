@@ -10,9 +10,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     private var store = TodoItemStore()
     private var date = Date()
     
-    
-    private let days = ["", "Monday", "Tuesday", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -110,7 +107,7 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Set the title for each section
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let title = days[Calendar.current.component(.weekday, from: date)] + " " + dateFormatter.string(from: date)
+        let title = dateFormatter.weekdaySymbols[Calendar.current.component(.weekday, from: date) - 1] + " " + dateFormatter.string(from: date)
         return title
     }
     
