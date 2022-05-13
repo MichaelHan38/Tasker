@@ -23,4 +23,8 @@ Team member: Michael Han
 - [ ] Each calendar date displays the number of todo items
 
 
+## Limitations:
+- Functionality to add task in Calendar View is temporarily removed due to bug with persistent container getting loaded multiple times. Tthis eventually causes the app to crash.
+- Eventually I'd like to implement a category/label system where each task is displayed and grouped based on its category/label.
+
 <a href="https://www.figma.com/proto/zpI5fcOadWoQ7kwHPzlLgb/Untitled?page-id=0%3A1&node-id=2%3A2&viewport=241%2C48%2C1.02&scaling=scale-down&starting-point-node-id=2%3A2">Prototype Link</a>
