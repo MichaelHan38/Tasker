@@ -22,7 +22,6 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.dataSource = self
         tableView.register(TodoCell .self, forCellReuseIdentifier: "TodoCell")
     }
-    
     private func displayTableView() {
         view.addSubview(tableView)
         
@@ -136,6 +135,14 @@ class TodoListViewController: UIViewController, UITableViewDelegate, UITableView
         formatter.timeZone = TimeZone.current
         return formatter
     }()
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let calendarViewController = segue.destination as? CalendarViewController else {
+            return
+        }
+        calendarViewController.segueDate = date
+        calendarViewController.store = store
+    }
     
 }
 

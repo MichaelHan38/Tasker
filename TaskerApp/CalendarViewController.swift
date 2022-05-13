@@ -4,15 +4,15 @@ import FSCalendar
 class CalendarViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FSCalendarDelegate, FSCalendarDataSource {
     
     private let tableView = UITableView()
-    private let store = TodoItemStore()
-    private var selectedDate = Date()
-    
+    var selectedDate = Date()
+    var segueDate : Date?
+    var store : TodoItemStore?
     var calendar: FSCalendar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        store.load(todoItemsOn: Date())
-
+        jumpToSegueDate()
+        store!.load(todoItemsOn: selectedDate)
         displayTableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -23,36 +23,10 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    @IBAction func addItemPressed(_ sender: Any) {
-        let alert = UIAlertController(title: "Add todo item",
-                                      message: nil, preferredStyle: .alert)
-        
-        let addAction = UIAlertAction(title: "Add", style: .default) { [unowned self]_ in
-            guard let title = alert.textFields?.first?.text else {
-                return
-            }
-            let todoItem = TodoItem(date: selectedDate, title: title, isDone: false)
-            self.addNewItem(todoItem)
+    private func jumpToSegueDate() {
+        if let segueDate = segueDate {
+            selectedDate = segueDate
         }
-        alert.addAction(addAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) {_ in
-            
-        }
-        alert.addAction(cancelAction)
-        
-        alert.addTextField { textField in
-            textField.placeholder = "Todo item"
-        }
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
-    private func addNewItem(_ todoItem: TodoItem) {
-        let indexPath = store.insert(todoItem: todoItem)
-        tableView.beginUpdates()
-        tableView.insertRows(at: [indexPath], with: .fade)
-        tableView.endUpdates()
     }
     
     func displayCalendar() {
@@ -62,7 +36,7 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
         calendar.scope = .month
         calendar.scrollDirection = .horizontal
         calendar.firstWeekday = 2
-        calendar.select(calendar.today)
+        calendar.select(selectedDate)
         
         calendar.appearance.todayColor = UIColor.orange
         calendar.appearance.titleWeekendColor = UIColor.orange
@@ -73,7 +47,7 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         selectedDate = date
-        store.load(todoItemsOn: date)
+        store!.load(todoItemsOn: date)
         tableView.reloadData()
     }
     
@@ -93,7 +67,7 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell") as? TodoCell else {
             return UITableViewCell()
         }
-        let todoItem = store.item(forIndexPath: indexPath)
+        let todoItem = store!.item(forIndexPath: indexPath)
         cell.textLabel?.text = todoItem?.title
         
         if todoItem?.isDone ?? false {
@@ -105,12 +79,12 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return store.count
+        return store!.count
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            store.delete(atIndexPath:  indexPath)
+            store!.delete(atIndexPath:  indexPath)
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
@@ -118,7 +92,7 @@ class CalendarViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        store.markDone(atIndexPath: indexPath)
+        store!.markDone(atIndexPath: indexPath)
         tableView.reloadRows(at: [indexPath], with: .fade)
     }
 }

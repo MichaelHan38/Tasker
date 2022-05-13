@@ -68,13 +68,7 @@
                         <viewLayoutGuide key="safeArea" id="zH7-kb-0DV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="V8p-Q4-o1T">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="plus" catalog="system" id="vfG-wc-dMD">
-                            <connections>
-                                <action selector="addItemPressed:" destination="mel-Ig-ZcS" id="gHF-f9-Iyy"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="V8p-Q4-o1T"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rJg-GY-gAO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
